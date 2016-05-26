@@ -61,7 +61,7 @@ def alpha_expantion_routine(psi1, psi2V, psi2H, metric, max_iter=500, display=Fa
     return states
 
 
-def collage(images, masks, method='a', display=True):
+def collage(images, masks, method='a', display=True, potential= lambda x: x.std(0).mean(2).ravel()):
     eps = 1e-5
     images = np.array(np.atleast_3d(images))
     k, n, m = images.shape[:3]
@@ -74,8 +74,8 @@ def collage(images, masks, method='a', display=True):
     # Pairwise potentials
     dV = (images[:, 1:] - images[:, :-1]) + eps
     dH = (images[:, :, 1:] - images[:, :, :-1]) + eps
-    psi2V = dV.std(0).mean(2).ravel()
-    psi2H = dH.std(0).mean(2).ravel()
+    psi2V = potential(dV)
+    psi2H = potential(dH)
 
     if method == 'a':
         mask = alpha_expantion_routine(psi1, psi2V, psi2H, metric, max_iter=2 * k, display=display)
