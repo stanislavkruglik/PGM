@@ -68,9 +68,8 @@ def collage(images, masks, method='a', display=True):
     # Metric
     metric = np.ones((k,k)) - np.eye(k)
     # psi1 potential
-    psi1 = np.zeros((n, m, k))
+    psi1 = np.inf*np.ones((n, m, k))
     for i, mask in enumerate(masks):
-        psi1[mask, :] = np.inf
         psi1[mask, i] = 0
     # Pairwise potentials
     dV = (images[:, 1:] - images[:, :-1]) + eps
